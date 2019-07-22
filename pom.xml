@@ -98,6 +98,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
+        <!-- EDA 기반 메시징 통신을 위한 스프링 클라우드 스트림 의존성 추가 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream</artifactId>
+            <version>2.2.0.RELEASE</version>
+        </dependency>
+        <!-- EDA 기반 메시징 통신을 위한 kafka 메시징 브로커 의존성 추가 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+            <version>2.2.0.RELEASE</version>
+        </dependency>
         <!-- 유레카 서버와의 보안 연결을 위하여 security 의존성 추가 -->
 <!--        <dependency>
             <groupId>org.springframework.boot</groupId>
