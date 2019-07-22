@@ -1,0 +1,84 @@
+## Before Service Fault Monitoring Server
+## Fault Control Microservice
+##
+## Service   : leaf-fault
+## Company   : Hyundai Elevator
+## Developer : Hong-Chang Lee
+## E-mail    : hongchang.lee@hdel.co.kr
+   
+spring:
+    application:
+        # 디스커버리 서비스에서 구별할 마이크로서비스 식별자(ID)
+        name: leaf-fault
+    profiles:
+        active: aws
+    cloud:
+        config:
+            discovery:
+                enabled: true
+                serviceId: stem-config
+        
+---
+spring:
+    profiles: dev
+                
+server:
+    # 로컬 기본 포트 지정
+    port: 809${SEQUENCE_NO}
+
+management:
+    security:
+        enabled: false
+    endpoints:
+        web:
+            exposure:
+                include: info, health, metrics, refresh
+
+eureka:
+    client:
+        # 유레카 디스커버리 서비스 등록 설정
+        registerWithEureka: true
+        fetchRegistry: true
+        # 서버에 등록(registry)된 마이크로서비스 인스턴스 정보를 업데이트하는 주기 설정 (초)
+        registryFetchIntervalSeconds: 3
+        # 응답 캐시 수정 때 전체 캐쉬를 불러도록 설정, false인 경우 업데이트된 인스턴스만 받음
+        shouldDisableDelta: true
+        # 등록할 유레카 서버 주소 (레지스트리 사본 소스 서버 역할 동시 설정)
+        serviceUrl:
+            defaultZone: http://localhost:8080/eureka/
+    instance:
+        # 애플리케이션 이름과 일련번호 기반의 인스턴스ID 정의
+        instanceId: ${spring.application.name}:${SEQUENCE_NO}
+        # 클라이언트 서비스에서 유레카 서버로 전송할 heartbeat 주기 (초)
+        leaseRenewalIntervalInSeconds: 5
+        # heartbeat 수신 불가 시 해제되기까지 대기 시간 (초)
+        leaseExpirationDurationInSeconds: 5
+        
+---
+spring:
+    profiles: aws
+
+server:
+    port: 5000
+    
+management:
+    security:
+        enabled: false
+    endpoints:
+        web:
+            exposure:
+                include: info, health, metrics, refresh
+    
+eureka:
+    client:
+        # 유레카 디스커버리 서비스 등록 설정
+        registerWithEureka: true
+        fetchRegistry: true
+        # 등록할 유레카 서버 주소 (레지스트리 사본 소스 서버 역할 동시 설정)
+        serviceUrl:
+            defaultZone: http://route.qnb5tf23ae.ap-northeast-2.elasticbeanstalk.com/eureka/
+    instance:
+#        preferIpAddress: true
+        # 애플리케이션 이름과 일련번호 기반의 인스턴스ID 정의
+#        instanceId: ${spring.application.name}:${server.port}
+        

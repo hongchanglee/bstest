@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>run</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>spring-boot:run</goal>
+            </goals>
+            <properties>
+                <spring-boot.run.jvmArguments>-Dspring.profiles.active=dev -DSEQUENCE_NO=2 -noverify -XX:TieredStopAtLevel=1</spring-boot.run.jvmArguments>
+                <spring-boot.run.mainClass>kr.co.hdel.bs.fm.fault.FaultControlServiceBootstrap</spring-boot.run.mainClass>
+                <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
+            </properties>
+        </action>
+        <action>
+            <actionName>debug</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>spring-boot:run</goal>
+            </goals>
+            <properties>
+                <spring-boot.run.jvmArguments>-Dspring.profiles.active=dev -DSEQUENCE_NO=2 -noverify -XX:TieredStopAtLevel=1</spring-boot.run.jvmArguments>
+                <spring-boot.run.mainClass>kr.co.hdel.bs.fm.fault.FaultControlServiceBootstrapp</spring-boot.run.mainClass>
+                <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
+            </properties>
+        </action>
+    </actions>
