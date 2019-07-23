@@ -36,6 +36,10 @@ management:
 
 stream:
     bindings:
+        input:
+            destination: tsetChannel
+            content-type: application/json
+            group: myGroup
         output:
             destination: testChannel
             content-type: application/json

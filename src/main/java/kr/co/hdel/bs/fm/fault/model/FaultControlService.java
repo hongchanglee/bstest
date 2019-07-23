@@ -19,7 +19,12 @@ import com.netflix.discovery.shared.Application;
 import com.netflix.discovery.shared.Applications;
 import kr.co.hdel.bs.fm.fault.config.RemoteConfigAccessor;
 import kr.co.hdel.bs.fm.fault.discovery.MicroserviceFinder;
+import kr.co.hdel.bs.fm.fault.object.MessageTest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -35,6 +40,8 @@ import org.springframework.web.client.RestTemplate;
  * @version 0.0.1-SNAPSHOT
  */
 @Component
+@EnableBinding(Sink.class)
+@Slf4j
 public class FaultControlService
 {
     @Autowired
@@ -51,6 +58,8 @@ public class FaultControlService
     
     @Autowired
     private RemoteConfigAccessor remoteConfigAccessor;
+    
+    private String messageValue;
 
     
     public String getCurrentElConnections()
@@ -61,5 +70,11 @@ public class FaultControlService
         ResponseEntity<String> exchange = restTemplate.exchange(urlOfCurrentConnections, HttpMethod.GET, HttpEntity.EMPTY, String.class);
         
         return exchange.getBody();
+    }
+    
+    @StreamListener(Sink.INPUT)
+    public void getMessageValue(MessageTest test)
+    {
+        log.info("Received a value {} for Id {}", test.toString(), test.getId());
     }
 }
