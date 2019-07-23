@@ -15,17 +15,11 @@
 package kr.co.hdel.bs.fm.fault.model;
 
 import com.netflix.discovery.EurekaClient;
-import com.netflix.discovery.shared.Application;
-import com.netflix.discovery.shared.Applications;
 import kr.co.hdel.bs.fm.fault.config.RemoteConfigAccessor;
 import kr.co.hdel.bs.fm.fault.discovery.MicroserviceFinder;
-import kr.co.hdel.bs.fm.message.object.MessageTest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
