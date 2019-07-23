@@ -34,6 +34,15 @@ management:
             exposure:
                 include: info, health, metrics, refresh
 
+stream:
+    bindings:
+        output:
+            destination: testChannel
+            content-type: application/json
+        kafka:
+            zkNodes: localhost
+            brokers: localhost
+            
 eureka:
     client:
         # 유레카 디스커버리 서비스 등록 설정

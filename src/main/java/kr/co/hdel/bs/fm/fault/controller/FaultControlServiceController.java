@@ -15,6 +15,7 @@
 package kr.co.hdel.bs.fm.fault.controller;
 
 import kr.co.hdel.bs.fm.fault.config.RemoteConfigAccessor;
+import kr.co.hdel.bs.fm.fault.message.FaultSourceBean;
 import kr.co.hdel.bs.fm.fault.model.FaultControlService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,10 @@ public class FaultControlServiceController
     
     @Autowired
     private BuildProperties buildProperties;
+    
+    @Autowired
+    private FaultSourceBean faultSourceBean;
+
     
     @GetMapping("/test")
     public String getTest()
@@ -87,5 +92,13 @@ public class FaultControlServiceController
         log.debug("log test debug");
         log.info("log test info");
         return faultControlService.getCurrentElConnections();
+    }
+    
+    @GetMapping("/test/id/{id}/value/{value}")
+    public String getTestValue(@PathVariable String id, @PathVariable String value)
+    {
+        faultSourceBean.publishTestValue(id, value);
+        
+        return "Publish Success";
     }
 }
