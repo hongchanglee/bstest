@@ -12,7 +12,7 @@
  *  Dev Year    : 2019
  */
 
-package kr.co.hdel.bs.fm.fault.object;
+package kr.co.hdel.bs.fm.message.object;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

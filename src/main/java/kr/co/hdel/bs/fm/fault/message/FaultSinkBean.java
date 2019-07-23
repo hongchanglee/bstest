@@ -17,36 +17,33 @@ package kr.co.hdel.bs.fm.fault.message;
 import kr.co.hdel.bs.fm.message.object.MessageTest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 /**
  * Before Service Fault Monitoring Server.
- * 실시간 모니터링 마이크로서비스 메시징 생산자 클래스
+ * 실시간 모니터링 마이크로서비스 메시징 소비자 클래스
  * 
  * @author Hong-Chang Lee
  * @version 0.0.1-SNAPSHOT
  */
 @Component
 @Slf4j
-public class FaultSourceBean
+public class FaultSinkBean
 {
-    private Source source;
+    private Sink sink;
     
     @Autowired
-    public FaultSourceBean(Source source)
+    public FaultSinkBean(Sink sink)
     {
-        this.source = source;
+        this.sink = sink;
     }
     
-    public void publishTestValue(String id, String value)
+    @StreamListener(Sink.INPUT)
+    public void getMessageValue(@Payload MessageTest test)
     {
-        log.info("Sending kafka message {} for Id: {}", value, id);
-        
-        MessageTest test = new MessageTest(id, value);
-        
-        source.output().send(MessageBuilder.withPayload(test).build());
-    }
-    
+        log.info("Received a value {} for Id {}", test.toString(), test.getId());
+    } 
 }
