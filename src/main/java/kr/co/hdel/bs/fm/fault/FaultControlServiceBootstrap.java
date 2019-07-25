@@ -49,7 +49,6 @@ public class FaultControlServiceBootstrap
         return new RestTemplate();
     }
     
-    
 
     public static void main(String[] args) 
     {
