@@ -15,22 +15,18 @@
 package kr.co.hdel.bs.fm.fault.model;
 
 import com.netflix.discovery.EurekaClient;
-import com.netflix.discovery.shared.Application;
-import com.netflix.discovery.shared.Applications;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import java.util.Random;
 import kr.co.hdel.bs.fm.fault.config.RemoteConfigAccessor;
 import kr.co.hdel.bs.fm.fault.discovery.MicroserviceFinder;
-import kr.co.hdel.bs.fm.message.object.MessageTest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -40,7 +36,7 @@ import org.springframework.web.client.RestTemplate;
  * @author Hong-Chang Lee
  * @version 0.0.1-SNAPSHOT
  */
-@Component
+@Service
 @Slf4j
 public class FaultControlService
 {
@@ -64,14 +60,38 @@ public class FaultControlService
     
     private String messageValue;
 
-    
+    @HystrixCommand
     public String getCurrentElConnections()
     {
+        randomlyRunLong()
+                ;
         String applicationName = remoteConfigAccessor.getLeafServices().get("mon");
         String urlOfCurrentConnections = microserviceFinder.getUrlOfCurrentConnections(applicationName);
         
         ResponseEntity<String> exchange = restTemplate.exchange(urlOfCurrentConnections, HttpMethod.GET, HttpEntity.EMPTY, String.class);
         
         return exchange.getBody();
+    }
+    
+    
+    private void randomlyRunLong()
+    {
+        Random rand = new Random();
+        
+        int random = rand.nextInt((2-1)+1)+1;
+        
+        if(random == 2) sleep();
+    }
+    
+    private void sleep()
+    {
+        try
+        {
+            Thread.sleep(11000);
+        }
+        catch(InterruptedException ex)
+        {
+            ex.printStackTrace();
+        }
     }
 }
